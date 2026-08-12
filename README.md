@@ -52,8 +52,8 @@
 - [x] 邀请码，邀请链接分享 [demo已实现](https://www.xsai.online/#/user)
 - [x] AI视频生成 [demo已实现](https://www.xsai.online/#/user)
 - [x] AI二维码 [demo已实现](https://www.xsai.online/#/img)
-- [ ] 后台功能，接受定制开发中
-- [ ] 调用其他平台api
+- [x] 后台功能，接受定制开发中
+- [x] 调用其他平台api
 
 ### 本地开发
 
