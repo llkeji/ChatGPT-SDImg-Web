@@ -3,6 +3,7 @@ import { getServerSideConfig } from "../config/server";
 import md5 from "spark-md5";
 import { ACCESS_CODE_PREFIX } from "../constant";
 import { OPENAI_URL } from "./common";
+import { logInfo } from "../utils/logger";
 
 function getIP(req: NextRequest) {
   let ip = req.ip ?? req.headers.get("x-real-ip");
@@ -34,11 +35,11 @@ export function auth(req: NextRequest) {
   const hashedCode = md5.hash(accessCode ?? "").trim();
 
   const serverConfig = getServerSideConfig();
-  console.log("[Auth] allowed hashed codes: ", [...serverConfig.codes]);
-  console.log("[Auth] got access code:", accessCode);
-  console.log("[Auth] hashed access code:", hashedCode);
-  console.log("[User IP] ", getIP(req));
-  console.log("[Time] ", new Date().toLocaleString());
+  logInfo("[Auth]", "request", {
+    hasAccessCode: !!accessCode,
+    hashedCode,
+    ip: getIP(req) ?? "",
+  });
 
   if (serverConfig.needCode && !serverConfig.codes.has(hashedCode) && !token) {
     return {
@@ -51,13 +52,19 @@ export function auth(req: NextRequest) {
   if (!token) {
     const apiKey = serverConfig.apiKey;
     if (apiKey) {
-      console.log("[Auth] use system api key");
+      logInfo("[Auth]", "using system api key", {
+        hasSystemApiKey: true,
+      });
       req.headers.set("Authorization", `Bearer ${apiKey}`);
     } else {
-      console.log("[Auth] admin did not provide an api key");
+      logInfo("[Auth]", "system api key missing", {
+        hasSystemApiKey: false,
+      });
     }
   } else {
-    console.log("[Auth] use user api key");
+    logInfo("[Auth]", "using user api key", {
+      hasUserApiKey: true,
+    });
   }
 
   return {

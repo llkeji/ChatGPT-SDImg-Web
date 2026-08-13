@@ -1,6 +1,15 @@
 import { getItem } from "./locales";
 import { getServerSideConfig } from "@/app/config/server";
 
+function getUserHost() {
+  const serverConfig = getServerSideConfig();
+  if (!serverConfig.reqUrl) {
+    throw new Error("[Request] REQ_URL is not configured");
+  }
+
+  return serverConfig.reqUrl;
+}
+
 export async function accountReLogin(
   inputAccountValue: string,
   inputPasswordValue: string,
@@ -9,10 +18,7 @@ export async function accountReLogin(
   formData.append("account", inputAccountValue);
   formData.append("password", inputPasswordValue);
 
-  var serverConfig = getServerSideConfig();
-  var USER_HOST = serverConfig.reqUrl;
-
-  return fetch(USER_HOST + `/api/account-relogin`, {
+  return fetch(`${getUserHost()}/api/account-relogin`, {
     method: "POST",
     body: formData,
   });
@@ -27,10 +33,7 @@ export async function userInfo() {
   }
   formData.append("token", userKey);
 
-  var serverConfig = getServerSideConfig();
-  var USER_HOST = serverConfig.reqUrl;
-
-  return fetch(USER_HOST + `/api/user-info`, {
+  return fetch(`${getUserHost()}/api/user-info`, {
     method: "POST",
     body: formData,
   });
@@ -47,9 +50,7 @@ export async function send(content: string) {
 
   formData.append("message", content);
 
-  var serverConfig = getServerSideConfig();
-  var USER_HOST = serverConfig.reqUrl;
-  return fetch(USER_HOST + `/api/send`, {
+  return fetch(`${getUserHost()}/api/send`, {
     method: "POST",
     body: formData,
   });

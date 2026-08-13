@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { logInfo } from "@/app/utils/logger";
 
 export const OPENAI_URL = "api.openai.com";
 const DEFAULT_PROTOCOL = "https";
@@ -19,11 +20,16 @@ export async function requestOpenai(req: NextRequest) {
     baseUrl = `${PROTOCOL}://${baseUrl}`;
   }
 
-  console.log("[Proxy] ", openaiPath);
-  console.log("[Base Url]", baseUrl);
+  logInfo("[Proxy]", "forward request", {
+    path: openaiPath,
+    method: req.method,
+    baseUrl,
+  });
 
   if (process.env.OPENAI_ORG_ID) {
-    console.log("[Org ID]", process.env.OPENAI_ORG_ID);
+    logInfo("[Proxy]", "using organization id", {
+      hasOrgId: true,
+    });
   }
 
   const timeoutId = setTimeout(() => {

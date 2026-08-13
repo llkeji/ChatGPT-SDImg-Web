@@ -4,6 +4,7 @@ import { StoreKey } from "../constant";
 import { getHeaders } from "../client/api";
 import { BOT_HELLO } from "./chat";
 import { ALL_MODELS } from "./config";
+import { logError, logInfo } from "../utils/logger";
 
 export interface AccessControlStore {
   accessCode: string;
@@ -62,7 +63,11 @@ export const useAccessStore = create<AccessControlStore>()(
         })
           .then((res) => res.json())
           .then((res: DangerConfig) => {
-            console.log("[Config] got config from server", res);
+            logInfo("[Config]", "got config from server", {
+              needCode: res.needCode,
+              hideUserApiKey: res.hideUserApiKey,
+              enableGPT4: res.enableGPT4,
+            });
             set(() => ({ ...res }));
 
             if (!res.enableGPT4) {
@@ -77,8 +82,10 @@ export const useAccessStore = create<AccessControlStore>()(
               BOT_HELLO.content = (res as any).botHello;
             }
           })
-          .catch(() => {
-            console.error("[Config] failed to fetch config");
+          .catch((error) => {
+            logError("[Config]", "failed to fetch config", {
+              message: error instanceof Error ? error.message : String(error),
+            });
           })
           .finally(() => {
             fetchState = 2;

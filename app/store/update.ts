@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import { FETCH_COMMIT_URL, StoreKey } from "../constant";
 import { api } from "../client/api";
 import { showToast } from "../components/ui-lib";
+import { logError, logInfo } from "../utils/logger";
 
 export interface UpdateStore {
   lastUpdate: number;
@@ -60,9 +61,11 @@ export const useUpdateStore = create<UpdateStore>()(
           set(() => ({
             remoteVersion: remoteId,
           }));
-          console.log("[Got Upstream] ", remoteId);
+          logInfo("[Update]", "fetched upstream commit", { remoteId });
         } catch (error) {
-          console.error("[Fetch Upstream Commit Id]", error);
+          logError("[Update]", "failed to fetch upstream commit id", {
+            message: error instanceof Error ? error.message : String(error),
+          });
         }
       },
 

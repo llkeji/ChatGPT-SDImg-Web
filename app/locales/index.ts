@@ -12,6 +12,7 @@ import RU from "./ru";
 import CS from "./cs";
 import KO from "./ko";
 import { merge } from "../utils/merge";
+import { logWarn } from "../utils/logger";
 
 export type { LocaleType, RequiredLocaleType } from "./cn";
 
@@ -69,7 +70,7 @@ function getLanguage() {
   try {
     return navigator.language.toLowerCase();
   } catch {
-    console.log("[Lang] failed to detect user lang.");
+    logWarn("[Lang]", "failed to detect user language");
     return DEFAULT_LANG;
   }
 }
