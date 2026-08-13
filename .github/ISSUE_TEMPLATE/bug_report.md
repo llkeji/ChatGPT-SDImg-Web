@@ -41,3 +41,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional Logs**
 Add any logs about the problem here.
+
+**Security and privacy checklist**
+- [ ] I removed API keys, cookies, tokens, private URLs, and production user data from this report.
+- [ ] I can reproduce this issue in this repository, not only in an unrelated upstream fork.

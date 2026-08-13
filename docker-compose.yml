@@ -1,9 +1,9 @@
 version: '3.9'
 services:
-  chatgpt-next-web: 
+  chatgpt-sdimg-web:
     profiles: ["no-proxy"]
-    container_name: chatgpt-next-web
-    image: yidadaa/chatgpt-next-web
+    container_name: chatgpt-sdimg-web
+    image: chengxs1994/chatgpt-sdimg-web
     ports:
       - 3000:3000
     environment:
@@ -12,20 +12,20 @@ services:
       - BASE_URL=$BASE_URL
       - OPENAI_ORG_ID=$OPENAI_ORG_ID
       - HIDE_USER_API_KEY=$HIDE_USER_API_KEY
-      - DISABLE_GPT4=DISABLE_GPT4
+      - DISABLE_GPT4=$DISABLE_GPT4
 
-  chatgpt-next-web-proxy: 
+  chatgpt-sdimg-web-proxy:
     profiles: ["proxy"]
-    container_name: chatgpt-next-web-proxy
-    image: yidadaa/chatgpt-next-web
+    container_name: chatgpt-sdimg-web-proxy
+    image: chengxs1994/chatgpt-sdimg-web
     ports:
       - 3000:3000
     environment:
       - OPENAI_API_KEY=$OPENAI_API_KEY
       - CODE=$CODE
       - PROXY_URL=$PROXY_URL
-      - REQ_URL=REQ_URL
+      - REQ_URL=$REQ_URL
       - BASE_URL=$BASE_URL
       - OPENAI_ORG_ID=$OPENAI_ORG_ID
       - HIDE_USER_API_KEY=$HIDE_USER_API_KEY
-      - DISABLE_GPT4=DISABLE_GPT4
+      - DISABLE_GPT4=$DISABLE_GPT4
